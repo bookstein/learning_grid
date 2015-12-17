@@ -1,24 +1,17 @@
 {
-  "name": "learning_grid",
-  "version": "0.0.1",
-  "description": "an app for tracking learning goals",
-  "main": "index.js",
+  "name": "learning_grid2",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "test": "'echo \"we have no tests yet\"'"
+    "start": "node ./bin/www"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/bookstein/learning_grid.git"
-  },
-  "keywords": [
-    "learning",
-    "grid"
-  ],
-  "author": "ebookstein",
-  "contributors": "keighty",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/bookstein/learning_grid/issues"
-  },
-  "homepage": "https://github.com/bookstein/learning_grid"
+  "dependencies": {
+    "body-parser": "~1.13.2",
+    "cookie-parser": "~1.3.5",
+    "debug": "~2.2.0",
+    "express": "~4.13.1",
+    "jade": "~1.11.0",
+    "morgan": "~1.6.1",
+    "serve-favicon": "~2.3.0"
+  }
 }
