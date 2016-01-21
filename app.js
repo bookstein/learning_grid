@@ -24,10 +24,54 @@ app.use(bodyParser.json());
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : ''
+  password : process.env.MYSQL_ROOT_PASSWORD
 });
 
-connection.query('USE test_database');
+// connection.query('USE learning_grid_test');
+connection.query('CREATE DATABASE IF NOT EXISTS learning_grid_test', function (err) {
+  if (err) throw err;
+  connection.query('USE learning_grid_test', function (err) {
+    if (err) throw err;
+    connection.query('CREATE TABLE IF NOT EXISTS user('
+      + 'id INT NOT NULL AUTO_INCREMENT,'
+      + 'name VARCHAR(60),'
+      + 'PRIMARY KEY(id)'
+      +  ')', function (err) {
+          if (err) throw err;
+      });
+    connection.query('CREATE TABLE IF NOT EXISTS entity ('
+      + 'id INT NOT NULL AUTO_INCREMENT,'
+      + 'name VARCHAR(60),'
+      + 'description VARCHAR(900),'
+      + 'type VARCHAR(60),'
+      + 'PRIMARY KEY (id)'
+      + ')', function (err) {
+          if (err) throw err;
+      });
+    connection.query('CREATE TABLE IF NOT EXISTS user_entity ('
+      + 'user_id INT NOT NULL,'
+      + 'entity_id INT NOT NULL,'
+      + 'zone VARCHAR(60),'
+      + 'FOREIGN KEY (user_id) REFERENCES user(id),'
+      + 'FOREIGN KEY (entity_id) REFERENCES entity(id),'
+      + 'PRIMARY KEY (user_id, entity_id)'
+      + ')', function (err) {
+          if (err) throw err;
+      });
+    connection.query('CREATE TABLE IF NOT EXISTS comment ('
+      + 'id INT NOT NULL AUTO_INCREMENT,'
+      + 'user_id INT NOT NULL,'
+      + 'entity_id INT NOT NULL,'
+      + 'text VARCHAR(140),'
+      + 'FOREIGN KEY (user_id) REFERENCES user(id),'
+      + 'FOREIGN KEY (entity_id) REFERENCES entity(id),'
+      + 'PRIMARY KEY (id)'
+      + ')', function (err) {
+          if (err) throw err;
+      });
+  });
+});
+
 
 // extended: false means that we can only send strings or arrays
 // in the query string
