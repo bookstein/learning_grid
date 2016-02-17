@@ -10,10 +10,6 @@ var connection = mysql.createConnection({
   database: 'learning_grid_test'
 })
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource YAY');
-});
 
 // Router takes a request (req), response object (res), and a callback (next)
 router.get('/:id', function (req, res, next) {
@@ -27,4 +23,9 @@ router.get('/:id', function (req, res, next) {
     }
   });
 })
+
+/* GET users listing. */
+router.get('/', function(req, res, next) {
+  res.send('respond with a resource YAY');
+});
 module.exports = router;

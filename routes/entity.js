@@ -10,17 +10,6 @@ var connection = mysql.createConnection({
   database: 'learning_grid_test'
 })
 
-/* GET entities listing. */
-router.get('/', function(req, res, next) {
-  connection.query("SELECT * from entity", function (err, rows) {
-    if (err || !rows.length) {
-      res.send("Cannot find your entities");
-    }
-    else {
-      res.send(rows)
-    }
-  });
-});
 
 // Router takes a request (req), response object (res), and a callback (next)
 router.get('/:id', function (req, res, next) {
@@ -34,4 +23,16 @@ router.get('/:id', function (req, res, next) {
     }
   });
 })
+/* GET entities listing. */
+router.get('/', function(req, res, next) {
+  connection.query("SELECT * from entity", function (err, rows) {
+    if (err || !rows.length) {
+      res.send("Cannot find your entities");
+    }
+    else {
+      res.send(rows)
+    }
+  });
+});
+
 module.exports = router;
