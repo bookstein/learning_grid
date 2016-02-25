@@ -30,27 +30,27 @@ router.get('/:id', function (req, res, next) {
   });
 });
 
-
-// GET users/:id/entities/:id (SHOW)
-router.get('/:userId/entities/:entityId', function (req, res, next) {
-  connection.query(
-    'SELECT entity.*, user.* ' +
-    'FROM user_entity ' +
-    'INNER JOIN entity ' +
-    'ON user_entity.entity_id = ' + req.params.entityId +
-    ' INNER JOIN user ' +
-    'ON user_entity.user_id = ' + req.params.userId +
-    ' WHERE entity.id = ' + req.params.entityId,
-    function (err, rows, fields) {
-      if (err || !rows.length) {
-        console.log("the error is: " + err)
-        console.log("rows: " + rows)
-        res.send('Couldn\'t find a matching entity for this user!')
-      } else {
-        res.send(rows);
-      }
-  });
-});
+// FIXME - gets all the users, not just 1
+// // GET users/:id/entities/:id (SHOW)
+// router.get('/:userId/entities/:entityId', function (req, res, next) {
+//   connection.query(
+//     'SELECT entity.*, user.*, user_entity.zone ' +
+//     'FROM user_entity ' +
+//     'INNER JOIN entity ' +
+//     'ON user_entity.entity_id = ' + req.params.entityId +
+//     ' INNER JOIN user ' +
+//     'ON user_entity.user_id = ' + req.params.userId +
+//     ' WHERE entity.id = ' + req.params.entityId,
+//     function (err, rows, fields) {
+//       if (err || !rows.length) {
+//         console.log("the error is: " + err)
+//         console.log("rows: " + rows)
+//         res.send('Couldn\'t find a matching entity for this user!')
+//       } else {
+//         res.send(rows);
+//       }
+//   });
+// });
 
 // less specific: put it later in the routes file! (matching)
 // GET users/:id/entities (LIST)
@@ -59,7 +59,7 @@ router.get('/:id/entities', function (req, res, next) {
 
     //select entity.* from user_entity join entity on entity.id = user_entity.entity_id where user_entity.user_id = 1;
 
-    'SELECT entity.* ' +
+    'SELECT entity.*, user_entity.zone ' +
     'FROM user_entity ' +
     'INNER JOIN entity ' +
     'ON user_entity.entity_id = entity.id ' +

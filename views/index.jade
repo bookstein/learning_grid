@@ -3,3 +3,42 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+
+  div#example
+  script.
+      ReactDOM.render(
+        React.createElement('h1', null, 'Hello, world!'),
+        document.getElementById('example')
+      );
+
+      var TableRow = React.createClass({
+        getInitialState: function() {
+          return {
+            name: ""
+          };
+        },
+
+        componentDidMount: function() {
+          this.serverRequest = $.get('/users/1/entities', function (result) {
+            var entity = result[0];
+            this.setState({
+              name: entity.name
+            });
+          }.bind(this));
+        },
+
+        componentWillUnmount: function() {
+          this.serverRequest.abort();
+        },
+
+        render: function() {
+          return (
+              {this.state.name} is the name of the entity
+          );
+        }
+      });
+
+      ReactDOM.render(
+        React.createElement('TableRow'),
+        mountNode
+      );
