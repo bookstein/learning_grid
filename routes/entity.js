@@ -35,4 +35,13 @@ router.get('/', function(req, res, next) {
   });
 });
 
+// entity/new/entity
+router.get('/new', function (req, res, next) {
+  res.render('new_entity_form', { title: 'Learning Grid' });
+})
+
+router.post('/new', function (req, res, next) {
+  connection.query("INSERT INTO entity (name, description, type) VALUES ( 'test23', 'a fun thing', 'topic')")
+})
+
 module.exports = router;
