@@ -4,41 +4,67 @@ block content
   h1= title
   p Welcome to #{title}
 
-  div#example
-  script.
-      ReactDOM.render(
-        React.createElement('h1', null, 'Hello, world!'),
-        document.getElementById('example')
-      );
+  div#entityTable
 
-      var TableRow = React.createClass({
-        getInitialState: function() {
+  script(type="text/babel").
+    var EntityTable = React.createClass({
+      render: function() {
+        return (
+          <table className="entities">
+              <TableRows entities={this.state.rows} />
+          </table>
+        )
+      },
+      getInitialState: function() {
           return {
-            name: ""
+            rows:[]
           };
-        },
+      },
+      // componentDidMount is a callback -- as soon as CommentBox has rendered, this is called
+      componentDidMount: function() {
+        this.serverRequest = $.get('/users/1/entities', function (result) {
+          var entities = result;
+          this.setState({
+            rows: entities
+          });
+        }.bind(this));  // bind data to entityTable
+      },
+      componentWillUnmount: function() {
+        this.serverRequest.abort();
+      }
+    });
 
-        componentDidMount: function() {
-          this.serverRequest = $.get('/users/1/entities', function (result) {
-            var entity = result[0];
-            this.setState({
-              name: entity.name
-            });
-          }.bind(this));
-        },
-
-        componentWillUnmount: function() {
-          this.serverRequest.abort();
-        },
-
-        render: function() {
+    var TableRows = React.createClass({
+      render: function() {
+        var entities = this.props.entities.map(function(entity){
           return (
-              {this.state.name} is the name of the entity
-          );
-        }
-      });
+            <TableEntry entity={entity} key={entity.id} />
+          )
+        })
 
-      ReactDOM.render(
-        React.createElement('TableRow'),
-        mountNode
-      );
+        return (
+          <tbody>
+            {entities}
+          </tbody>
+        )
+      }
+    })
+
+    var TableEntry = React.createClass({
+      render: function() {
+        return (
+          <tr>
+            <td>{this.props.entity.name}</td>
+            <td>{this.props.entity.description}</td>
+            <td>{this.props.entity.zone}</td>
+          </tr>
+        )
+      }
+    })
+
+    ReactDOM.render(
+      <EntityTable />,
+      document.getElementById('entityTable')
+    );
+
+
