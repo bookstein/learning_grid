@@ -82,8 +82,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
-// app.use('/entity', entity);
-users.use('/entity', entity);
+app.use('/entities', entity);
+// do not nest entities inside of users -- confusing routing logic :(
+// instead, use route /users/:id/entities to get entities associated with users
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
