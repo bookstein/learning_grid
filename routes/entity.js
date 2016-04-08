@@ -17,7 +17,12 @@ router.get('/new', function (req, res, next) {
 
 // POST /entities/new
 router.post('/new', function (req, res, next) {
-  connection.query("INSERT INTO entity (name, description, type) VALUES ( 'test23', 'a fun thing', 'topic')")
+  console.log(req.body)
+  connection.query("INSERT INTO entity (name, description, type) VALUES ( '"
+  + req.body.name + "', '"
+  + req.body.description + "', '"
+  + req.body.entityType + "');");
+  res.redirect(201, "/")
 });
 
 // Router takes a request (req), response object (res), and a callback (next)
@@ -39,6 +44,7 @@ router.get('/', function(req, res, next) {
       res.send("Cannot find your entities");
     }
     else {
+      // res.render('index', {title: 'Learning Grid'})
       res.send(rows)
     }
   });

@@ -6,9 +6,11 @@ block content
 
   div.newEntityForm
     form(name="newEntity", action="/entities/new", method="post")
+      label(for="name") Name of entity
       input(type="text", name="name")
+      label(for="description") Description
       input(type="text", name="description")
-      select
-        option(value='topic') Topic
-        option(value='resource') Resource
+      select(name = "entityType")
+        option(name='topic' value='topic' selected) Topic
+        option(name='resource' value='resource') Resource
       input(type="submit", value="Submit")
