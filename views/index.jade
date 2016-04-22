@@ -11,9 +11,15 @@ block content
     var EntityTable = React.createClass({
       render: function() {
         return (
-          <table className="entities">
-              <TableRows entities={this.state.rows} />
-          </table>
+          <div>
+            <h1>Zone: {this.props.params.zone}</h1>
+            <ReactRouter.Link to="/comfort" activeClassName='active'>comfort</ReactRouter.Link>
+            <ReactRouter.Link to="/learning" activeClassName='active'>learning</ReactRouter.Link>
+            <ReactRouter.Link to="/terror" activeClassName='active'>terror</ReactRouter.Link>
+            <table className="entities">
+                <TableRows entities={this.state.rows} zone={this.props.params.zone} />
+            </table>
+          </div>
         )
       },
       getInitialState: function() {
@@ -37,7 +43,11 @@ block content
 
     var TableRows = React.createClass({
       render: function() {
-        var entities = this.props.entities.map(function(entity){
+        var zone = this.props.zone
+        var entities = this.props.entities.filter(function (entity) {
+          return entity.zone === zone
+        })
+        .map(function(entity){
           return (
             <TableEntry entity={entity} key={entity.id} />
           )
@@ -63,9 +73,9 @@ block content
       }
     })
 
-    ReactDOM.render(
-      <EntityTable />,
-      document.getElementById('entityTable')
-    );
-
-
+    ReactDOM.render((
+      <ReactRouter.Router history={ReactRouter.hashHistory}>
+        <ReactRouter.Route path="/" component={EntityTable}/>
+        <ReactRouter.Route path="/:zone" component={EntityTable}/>
+      </ReactRouter.Router>
+    ), document.getElementById('entityTable'))
